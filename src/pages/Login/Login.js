@@ -1,0 +1,220 @@
+import React, { useState, useEffect } from "react";
+import "../../styles/Login.css";
+import Input from "../../components/Input/Input";
+import { useNavigate } from "react-router-dom";
+import { users } from "../../data/UserData";
+import Logo from "../../assets/images/black-logo.png";
+import { FooterLogin } from "../../components/Footer/Footer";
+
+// Moon Icon
+const MoonIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+  </svg>
+);
+
+// AlertIcon (UNCHANGED)
+const AlertIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+);
+
+
+export default function Login() {
+  // navigation
+  const navigate = useNavigate();
+
+  // state
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  // Dark Mode
+  const [dark, setDark] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
+
+  // Apply theme on load and when toggled
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const favicon = document.querySelector("link[rel='icon']");
+
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark");
+      if (favicon) favicon.href = "/white-logo.png";
+    } else {
+      document.body.classList.remove("dark");
+      if (favicon) favicon.href = "/black-logo.png";
+    }
+  }, []);
+
+  useEffect(() => {
+    const favicon = document.querySelector("link[rel='icon']");
+
+    if (dark) {
+      document.body.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+
+      if (favicon) favicon.href = "/white-logo.png"; // dark → white icon
+    } else {
+      document.body.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+
+      if (favicon) favicon.href = "/black-logo.png"; // light → black icon
+    }
+  }, [dark]);
+
+  // CORRECT ROUTING LOGIC
+  const handleRouting = (user) => {
+
+    // No institute
+    if (!user.institutes || user.institutes.length === 0) {
+      setError("No institute assigned.");
+      return;
+    }
+
+    // save user
+    localStorage.setItem("user", JSON.stringify(user));
+
+    // Multiple institutes → Institute page
+    if (user.institutes.length > 1) {
+      navigate("/institutes");
+      return;
+    }
+
+    const institute = user.institutes[0];
+
+    // No roles
+    if (!institute.roles || institute.roles.length === 0) {
+      setError("No roles assigned to this institute");
+      return;
+    }
+
+    // save institute
+    localStorage.setItem("institute", JSON.stringify(institute));
+
+    //  Multiple roles → Role page
+    if (institute.roles.length > 1) {
+      navigate("/roles");
+      return;
+    }
+
+    //  Single role → Dashboard
+    localStorage.setItem("role", JSON.stringify(institute.roles[0]));
+    navigate("/dashboard");
+  };
+
+  //  LOGIN HANDLER
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setError("");
+
+    // Empty check
+    if (!username || !password) {
+      setError("Enter username & password");
+      return;
+    }
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(username)) {
+      setError("Enter valid email");
+      return;
+    }
+
+    // Password validation
+    const passwordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&]).{6,}$/;
+
+    if (!passwordPattern.test(password)) {
+      setError("Invalid password");
+      return;
+    }
+
+    // Find user
+    const foundUser = users.find(
+      (u) => u.email === username && u.password === password
+    );
+
+    if (!foundUser) {
+      setError("Invalid credentials");
+      return;
+    }
+
+    // Route user
+    handleRouting(foundUser);
+  };
+
+  return (
+    <div className="page-wrapper">
+      {/* Top Icons */}
+      <div className="top-right-icons">
+        <button className="icon-btn">
+          <AlertIcon />
+        </button>
+
+        <button
+          className="icon-btn"
+          onClick={() => setDark(!dark)}
+        >
+          <MoonIcon />
+        </button>
+      </div>
+
+      {/* Login Card */}
+      <div className="login-card">
+        <div className="card-logo">
+          <img src={Logo} className="logo-img" alt="logo" />
+        </div>
+
+        <h1 className="card-title">SchoolCoreOS</h1>
+
+        <form className="card-form" onSubmit={handleLogin}>
+          <Input
+            placeholder="Email"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          {error && <p className="error-msg">{error}</p>}
+
+          <button className="continue-btn" onClick={handleLogin}>
+            Continue
+          </button>
+        </form>
+      </div>
+
+      <FooterLogin />
+    </div>
+  );
+}
