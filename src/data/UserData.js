@@ -6,7 +6,6 @@ import Five from "../assets/Institute_logo/five.png";
 import RoleOne from "../assets/role_logos/administrator.png";
 import RoleTwo from "../assets/role_logos/principal.png";
 import RoleThree from "../assets/role_logos/teacher.png";
-import RoleFour from "../assets/role_logos/parent.png";
 
 export const users = [
   //  No Institute (null case)

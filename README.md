@@ -2,7 +2,7 @@
 
  You can access the live application here:
 
-👉 https://meek-tanuki-c6de34.netlify.app/
+Link:   https://meek-tanuki-c6de34.netlify.app/
 
 ##  Login Credentials & Test Scenarios
 
@@ -46,8 +46,7 @@ Wrong password
 
 ### [c@scos.com](mailto:c@scos.com) (1 Institute & Multiple Roles)
 
-* Login → Institute selected
-* Redirect to Role Page
+* Login → Redirect to Role Page
 * Select role → Dashboard
 
 ---

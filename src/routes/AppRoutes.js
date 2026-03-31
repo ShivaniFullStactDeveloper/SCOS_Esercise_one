@@ -15,31 +15,31 @@ export default function AppRoutes() {
 
         <Route path="/" element={<Login />} />
 
-        <Route 
-          path="/institutes" 
+        <Route
+          path="/institutes"
           element={
             <ProtectedRoute>
               <InstitutePage />
             </ProtectedRoute>
-          } 
+          }
         />
 
-        <Route 
-          path="/roles" 
+        <Route
+          path="/roles"
           element={
             <ProtectedRoute>
               <RolePage />
             </ProtectedRoute>
-          } 
+          }
         />
 
-        <Route 
-          path="/dashboard" 
+        <Route
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
-          } 
+          }
         />
 
       </Routes>

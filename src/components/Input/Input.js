@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../Input/Input.css";
+import "../../styles/common_comp_style/Input.css";
 
 export default function Input({
   type = "text",

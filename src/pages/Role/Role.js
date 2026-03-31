@@ -6,13 +6,14 @@ import checkLogo from "../../assets/role_logos/check.png";
 import { FooterRole } from "../../components/Footer/Footer";
 
 export default function RolePage() {
-
+  // navigate hook
   const navigate = useNavigate();
-
+  // Get user and institute data from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
   const institute = JSON.parse(localStorage.getItem("institute"));
   const roles = institute?.roles || [];
 
+  // Get all institutes for change institute option
   const institutes = user?.institutes || [];
 
   // DARK THEME

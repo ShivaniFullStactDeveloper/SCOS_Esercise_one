@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../../assets/images/black-logo.png";
-import "./Header.css";
+import "../../styles/common_comp_style/Header.css";
 
 export default function Header({ user, showLogout, onLogout, fullWidth }) {
   return (

@@ -1,4 +1,4 @@
-import "../Footer/Footer.css"
+import "../../styles/common_comp_style/Footer.css";
 
 export function FooterLogin() {
   return (

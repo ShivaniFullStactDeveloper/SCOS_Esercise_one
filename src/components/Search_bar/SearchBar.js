@@ -1,11 +1,11 @@
 import React from "react";
-import "../Search_bar/SearchBar.css";
+import "../../styles/common_comp_style/SearchBar.css";
 
 export default function SearchBar({ value, onChange }) {
   return (
     <div className="search-container">
       <div className="search-box">
-
+        {/* Search Icon */}
         <svg className="search-icon"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 -960 960 960"
